@@ -17,13 +17,18 @@
 @media(min-width:1200px){.stat-value{font-size:29px}}@media(max-width:900px){.workspace{grid-template-columns:1fr}.results{position:static}.right-stack{grid-row:2}.stat{padding:14px}.toolbar{align-items:flex-start;flex-direction:column}.toolbar-buttons{width:100%}.stat-value{font-size:22px}}@media(max-width:520px){.page{padding:25px 15px 20px}.topbar-inner{padding:14px 17px}.brand{font-size:12px}.top-note{font-size:10px}.intro{gap:12px;margin-bottom:18px}h1{font-size:25px}.subtitle{font-size:11px}.intro-badge{width:61px;height:61px;font-size:9px}.intro-badge strong{font-size:20px}.stats{grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}.stat{padding:13px}.stat-value{font-size:23px}.stat-note{font-size:10px}.toolbar-buttons{gap:5px}.toolbar-buttons button{font-size:11px;padding:7px 9px}.panel-head{padding:17px 15px 13px}.panel-subtitle{padding:0 15px 13px;font-size:11px}.panel-body{padding:0 15px 15px}.member-main,.roster-head{grid-template-columns:minmax(90px,1fr) 108px 26px;gap:5px}.member-main select{font-size:12px}.member-name{gap:5px}.avatar{width:21px;height:24px}.member .remove{width:26px}.bonuses{padding:8px 30px 0 26px}.entry-main{grid-template-columns:minmax(65px,1fr) 115px 25px;gap:5px}.entry-main input{font-size:12px;padding:8px}.entry-main .remove{width:25px}.table-wrap{margin:0 12px}.footer{align-items:flex-start;flex-direction:column;gap:5px}.result-banner{padding:15px}.result-banner .amount{font-size:23px}.result-foot{padding:15px}.legend{gap:10px}.error-box{margin:0 15px 15px}.unit{font-size:10px}.roster-foot{padding:9px 15px}}
 @media print{.topbar,.toolbar-buttons,.remove,.add-line,.footer,.rule-card,button,.intro-badge,.toast{display:none!important}body{background:white}.page{padding:0}.workspace{display:block}.panel{break-inside:avoid;margin-bottom:15px;box-shadow:none}.results{position:static}.stack{display:block}.panel-body{padding-bottom:10px}.stats{gap:8px}.stat{box-shadow:none}.stat.featured{color:var(--ink);background:#f0f3e9}.featured .stat-label,.featured .stat-note,.featured .unit{color:#60705d}input,select{border:0;background:white;padding-left:0} .table-wrap{overflow:visible}}
 </style>
+<style>
+.editor-fields{border:0;padding:0;margin:0;min-width:0}.editor-fields:disabled{opacity:.75}.history-controls{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin:0 0 20px;padding:14px 18px;border:1px solid #e0e5d7;border-radius:12px;background:#f0f3e9}.history-date{display:flex;align-items:center;gap:10px;font-size:12px;white-space:nowrap}.history-date input{width:155px;background:var(--card)}.history-save-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.history-mode{font-size:11px;color:#75846b;max-width:330px;overflow-wrap:anywhere}.history-panel{margin-top:22px}.history-content{padding:0 22px 20px}.history-message{font-size:12px;color:var(--muted);margin:0 0 12px;overflow-wrap:anywhere}.history-message.error{color:var(--red)}.history-table{min-width:600px}.history-table td:first-child{max-width:240px}.history-table td:first-child strong{display:block}.history-table button{font-size:11px;padding:5px 10px}.history-bottom{text-align:center;margin-top:14px}.history-table-wrap{overflow:auto}.history-empty{padding:18px;text-align:center;border:1px dashed #dce0d1;border-radius:9px;color:var(--muted);font-size:12px}.history-controls .primary{background:var(--green)}@media(max-width:520px){.history-controls{padding:12px}.history-date{width:100%;justify-content:space-between}.history-save-actions{width:100%;justify-content:space-between}.history-content{padding:0 15px 15px}.history-mode{width:100%}.history-panel .panel-head{flex-wrap:wrap}.history-panel .panel-subtitle{line-height:1.8}}@media print{.history-controls,.history-panel{display:none!important}}
+</style>
 </head>
 <body>
-<header class="topbar"><div class="topbar-inner"><div class="brand"><span class="brand-mark" aria-hidden="true">✦</span>冒险团 · 战利品账本</div><span class="top-note"><i class="dot"></i> 离线可用 · 数据留在本机</span></div></header>
+<header class="topbar"><div class="topbar-inner"><div class="brand"><span class="brand-mark" aria-hidden="true">✦</span>冒险团 · 战利品账本</div><span class="top-note"><i class="dot"></i> 本机草稿 · 飞书公共历史</span></div></header>
 <main class="page">
   <div class="intro"><div><p class="eyebrow">BOSS LOOT / PARTY DIVIDENDS</p><h1>好好冒险，<span>明白分账。</span></h1><p class="subtitle">记下每一笔收支，让每位队友的收获都有据可查。</p></div><div class="intro-badge" aria-hidden="true"><strong>✧</strong>本次冒险<br>圆满收工</div></div>
   <div id="notice" class="notice" role="status" hidden></div>
+  <fieldset id="editor-fields" class="editor-fields"><legend class="sr-only">分红账目编辑器</legend>
   <div class="toolbar"><label><span class="sr-only">结算名称</span><input id="settlement-title" class="title-field" maxlength="100" placeholder="给本次结算起个名字"></label><div class="toolbar-buttons"><button type="button" id="demo" class="accent small">试试示例</button><button type="button" id="import" class="small">导入备份</button><button type="button" id="export" class="small">导出备份</button><button type="button" id="clear" class="text-button danger small">清空账目</button><input type="file" id="import-file" accept=".json,application/json" hidden></div></div>
+  <div class="history-controls"><label class="history-date">打团日期<input type="date" id="raid-date" required aria-label="打团日期"></label><div class="history-save-actions"><span id="history-mode" class="history-mode" role="status">当前为新场次草稿</span><button type="button" id="save-new" hidden>另存为新场次</button><button type="button" id="history-save" class="primary" disabled>保存到公共历史</button></div></div>
   <section class="stats" aria-label="结算概览"><div class="stat"><div class="stat-label">总收入 <span>↗</span></div><div class="stat-value" id="stat-income">0<span class="unit">金币</span></div><div class="stat-note">卖店 + 交易 + 老板消费</div></div><div class="stat"><div class="stat-label">总支出 <span>↘</span></div><div class="stat-value" id="stat-expense">0<span class="unit">金币</span></div><div class="stat-note" id="expense-note">材料 0 · 补贴 0</div></div><div class="stat featured"><div class="stat-label">可均分金额 <span>✦</span></div><div class="stat-value" id="stat-pool">0<span class="unit">金币</span></div><div class="stat-note">总收入 − 材料 − 职务补贴</div></div><div class="stat"><div class="stat-label">参与分红 <span>♧</span></div><div class="stat-value" id="stat-count">0<span class="unit">人</span></div><div class="stat-note" id="count-note">老板不计入分红人数</div></div></section>
   <div class="workspace">
     <div class="stack">
@@ -35,9 +40,12 @@
       <aside class="panel rule-card"><h3>每一份收益，怎么算？</h3><p>先扣除召唤材料和职务补贴，再由非老板队员均分。</p><div class="formula">个人应得 = 均分所得 + 团长补贴 + 奶妈补贴</div><p>老板消费仅增加收入，不产生分红份额。补贴按人填写，兼任时两项相加。</p><div class="legend"><span>● 普通队员：均分</span><span>● 团长 / 奶妈：均分 + 补贴</span></div></aside>
     </div>
   </div>
-  <footer class="footer"><span>冒险有伙伴，分账有依据。</span><span id="save-status" class="save-status" role="status">当前浏览器自动保存 · 建议定期导出备份</span></footer>
+  </fieldset>
+  <section class="panel history-panel" id="history-panel"><div class="panel-head"><div class="heading"><span class="step">04</span><h2>公共打团历史</h2></div><button type="button" id="history-refresh" class="small">刷新历史</button></div><p class="panel-subtitle">保存后所有人都可查看和编辑，数据统一维护在飞书中。金额单位：金币。</p><div class="history-content"><p id="history-message" class="history-message" role="status">正在读取公共历史…</p><div id="history-list"></div><div class="history-bottom"><button type="button" id="history-more" hidden>加载更多</button></div></div></section>
+  <footer class="footer"><span>冒险有伙伴，分账有依据。</span><span id="save-status" class="save-status" role="status">草稿保存在本机 · 点击保存才会写入公共历史</span></footer>
 </main>
 <dialog id="copy-dialog"><h3>结算明细</h3><p class="small">当前浏览器无法自动复制，请选中下方内容后手动复制。</p><label><span class="sr-only">可手动复制的结算明细</span><textarea id="copy-text" readonly></textarea></label><div class="dialog-actions"><button type="button" id="select-text">全选文本</button><button type="button" id="close-dialog" class="primary">完成</button></div></dialog>
+<dialog id="history-confirm" aria-labelledby="history-confirm-heading"><h3 id="history-confirm-heading">确认账目操作</h3><p id="history-confirm-text"></p><div class="dialog-actions"><button type="button" id="history-cancel">取消</button><button type="button" id="history-continue" class="primary">确认继续</button></div></dialog>
 <div id="toast" class="toast" role="status" hidden></div>
 <script id="dividend-core">
 'use strict';
@@ -154,11 +162,30 @@ var DividendCore = (() => {
   return { normalize, calculate, statement, unlinkBuyer };
 })();
 </script>
+<script id="history-client">
+// GitHub Pages 仅托管此 HTML。公共历史继续使用现有 HTTPS 服务。
+const HistoryClient = (() => {
+  const apiBase = 'https://maple-boss-dividend-20261117.solecandy64.chatgpt.site/api/history';
+  async function request(path = '', options = {}) {
+    let response;
+    try {
+      response = await fetch(apiBase + path, { ...options, credentials: 'omit', headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}) }, signal: AbortSignal.timeout(45000), cache: 'no-store' });
+    } catch { throw new Error('无法连接公共历史服务，请检查网络或服务地址，当前草稿已保留'); }
+    let data;
+    try { data = await response.json(); } catch { throw new Error('公共历史服务返回异常，当前草稿已保留'); }
+    if (!response.ok) throw new Error(data.error || '公共历史暂时不可用');
+    return data;
+  }
+  return { request };
+})();
+</script>
 <script>
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
   const key = 'maple-boss-dividend-v1';
+  const online = /^https?:$/.test(location.protocol);
+  const today = () => { const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date()); return ['year', 'month', 'day'].map(k => parts.find(p => p.type === k).value).join('-'); };
   const labels = { shop: '杂物卖店', trade: '贵重物品交易', boss: '老板消费', material: '召唤 Boss 材料' };
   const placeholders = { shop: '例如：杂物、装备卖店', trade: '例如：技能书交易到账', boss: '例如：老板购买装备', material: '例如：召唤材料、门票' };
   const fmt = n => Number(n).toLocaleString('zh-CN');
@@ -170,15 +197,31 @@ var DividendCore = (() => {
   let state = fresh();
   let toastTimer;
   let result;
+  let raidDate = today();
+  let editing = null;
+  let pendingCreate = null;
+  let busy = false;
+  let historyLoading = false;
+  let historyItems = [];
+  let historyCursor = null;
+  let confirmResolve = null;
   function toast(message) { $('toast').textContent = message; $('toast').hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { $('toast').hidden = true; }, 3500); }
   function notice(message) { $('notice').textContent = message; $('notice').hidden = !message; }
   function save() {
-    try { localStorage.setItem(key, JSON.stringify(state)); $('save-status').textContent = '已自动保存到当前浏览器 · 建议定期导出备份'; $('save-status').classList.remove('warning'); }
+    try { localStorage.setItem(key, JSON.stringify({ ...state, _history: { date: raidDate, editing, pendingCreate } })); $('save-status').textContent = '草稿已保存到本机 · 点击保存才会写入公共历史'; $('save-status').classList.remove('warning'); }
     catch { $('save-status').textContent = '浏览器无法保存，请及时导出备份'; $('save-status').classList.add('warning'); }
   }
   try {
     const saved = localStorage.getItem(key);
-    if (saved) state = DividendCore.normalize(JSON.parse(saved));
+    if (saved) {
+      const draft = JSON.parse(saved); state = DividendCore.normalize(draft);
+      const metadata = draft._history;
+      if (metadata) {
+        if (typeof metadata.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(metadata.date)) raidDate = metadata.date;
+        if (/^rec[A-Za-z0-9]+$/.test(metadata.editing?.id || '') && /^[a-f0-9]{64}$/.test(metadata.editing?.revision || '')) editing = { id: metadata.editing.id, revision: metadata.editing.revision };
+        if (typeof metadata.pendingCreate?.signature === 'string' && typeof metadata.pendingCreate?.requestId === 'string') pendingCreate = metadata.pendingCreate;
+      }
+    }
   } catch { notice('未能恢复浏览器中的账目：存储不可用或数据损坏。你可以继续计算，也可以导入之前的 JSON 备份。'); }
   function role(m) { return m.boss ? 'boss' : m.leader && m.healer ? 'both' : m.leader ? 'leader' : m.healer ? 'healer' : 'member'; }
   function drawRoster() {
@@ -200,6 +243,7 @@ var DividendCore = (() => {
     $('count-note').textContent = '共 ' + state.members.length + ' 位成员 · ' + state.members.filter(m => m.boss).length + ' 位老板不分红';
     for (const cat of Object.keys(labels)) { const el = $('total-' + cat); if (el) el.textContent = result.categories ? fmt(result.categories[cat]) + ' 金币' : '待检查金额'; }
     $('copy').disabled = !result.valid;
+    updateHistoryControls();
     if (!result.valid) {
       $('result').innerHTML = '<div class="empty-result"><div class="empty-icon" aria-hidden="true">♧</div><h3>' + (state.members.length ? '再核对一下，就能分红了' : '等待伙伴，等待战利品') + '</h3><p>填好队员和收支后，这里会自动算出每人应得。</p></div>' + (state.members.length || result.errors.length > 1 ? '<div class="error-box" role="status"><strong>暂不能结算</strong><ul>' + result.errors.map(e => '<li>' + esc(e) + '</li>').join('') + '</ul></div>' : '');
     } else {
@@ -207,7 +251,7 @@ var DividendCore = (() => {
     }
     if (persist) save();
   }
-  function render(persist = true) { $('settlement-title').value = state.title; drawRoster(); drawLedger(); updateResults(persist); }
+  function render(persist = true) { $('settlement-title').value = state.title; $('raid-date').value = raidDate; drawRoster(); drawLedger(); updateResults(persist); }
   function unlinkBuyer(m) {
     DividendCore.unlinkBuyer(state, m.id);
   }
@@ -258,10 +302,11 @@ var DividendCore = (() => {
     if (remove) { state.entries = state.entries.filter(row => row.id !== remove.dataset.removeEntry); drawLedger(); updateResults(); }
   });
   function hasData() { return state.members.length > 0 || state.entries.some(e => e.amount.trim() !== '' || e.description.trim() !== '') || state.title !== '本次 Boss 结算'; }
-  $('clear').addEventListener('click', () => { if (!confirm('清空所有队员、收支和补贴？此操作会覆盖当前浏览器草稿，建议先导出备份。')) return; state = fresh(); notice(''); render(); toast('账目已清空'); });
+  $('clear').addEventListener('click', () => { if (!confirm('清空所有队员、收支和补贴？此操作会覆盖当前浏览器草稿，建议先导出备份。')) return; state = fresh(); raidDate = today(); editing = null; pendingCreate = null; notice(''); render(); toast('本机草稿已清空，公共历史仍保留'); });
   $('demo').addEventListener('click', () => {
     if (hasData() && !confirm('载入示例会替换当前账目，建议先导出备份。继续吗？')) return;
     state = fresh(); state.title = '扎昆讨伐 · 示例结算';
+    editing = null; pendingCreate = null; raidDate = today();
     state.members = ['陈曦', '陈彧', '老王', '春子', '队内老板'].map(makeMember);
     Object.assign(state.members[0], { healer: true, healerBonus: '1000000' }); state.members[4].boss = true;
     state.entries.forEach((e, i) => { e.description = ['装备杂物卖店', '技能书交易到账', '老板购买装备', '召唤材料'][i]; e.amount = ['8000000', '20000000', '5000000', '500000'][i]; if (e.category === 'boss') e.buyerId = state.members[4].id; });
@@ -277,7 +322,7 @@ var DividendCore = (() => {
       if (file.size > 2000000) throw new Error('文件超过 2 MB，无法导入');
       const imported = DividendCore.normalize(JSON.parse(await file.text()));
       if (hasData() && !confirm('导入备份将替换当前账目。确认已保存需要的内容并继续吗？')) return;
-      state = imported; notice('已恢复备份。请核对队员和收支；不满足结算条件的草稿会显示具体提示。'); render(); toast('备份导入成功');
+      state = imported; editing = null; pendingCreate = null; raidDate = today(); notice('已恢复备份，当前为新场次草稿。请核对队员、日期和收支后再保存。'); render(); toast('备份导入成功');
     } catch (error) { notice('导入失败，原账目未变动：' + error.message); }
     finally { e.target.value = ''; }
   });
@@ -289,7 +334,90 @@ var DividendCore = (() => {
   });
   $('select-text').addEventListener('click', () => { $('copy-text').focus(); $('copy-text').select(); });
   $('close-dialog').addEventListener('click', () => $('copy-dialog').close());
+  function updateHistoryControls() {
+    $('history-save').textContent = busy ? '正在处理…' : editing ? '更新这条记录' : '保存到公共历史';
+    $('history-save').disabled = busy || !online || !result?.valid || !$('raid-date').validity.valid;
+    $('save-new').hidden = !editing;
+    $('save-new').disabled = busy || !online || !result?.valid || !$('raid-date').validity.valid;
+    $('history-mode').textContent = editing ? '当前正在编辑一条公共历史' : '当前为新场次草稿';
+    $('editor-fields').disabled = busy;
+    $('history-refresh').disabled = busy || historyLoading || !online;
+    $('history-more').disabled = busy || historyLoading;
+    for (const button of $('history-list').querySelectorAll('button')) button.disabled = busy;
+  }
+  function historyMessage(message, error = false) { $('history-message').textContent = message; $('history-message').classList.toggle('error', error); }
+  function confirmHistory(message) {
+    $('history-confirm-text').textContent = message;
+    return new Promise(resolve => { confirmResolve = resolve; $('history-confirm').showModal(); });
+  }
+  function finishConfirmation(accepted) { $('history-confirm').close(); confirmResolve?.(accepted); confirmResolve = null; }
+  $('history-cancel').addEventListener('click', () => finishConfirmation(false));
+  $('history-continue').addEventListener('click', () => finishConfirmation(true));
+  $('history-confirm').addEventListener('cancel', event => { event.preventDefault(); finishConfirmation(false); });
+  const historyApi = HistoryClient.request;
+  function drawHistory() {
+    const money = value => Number.isSafeInteger(value) && value >= 0 ? fmt(value) : '待检查';
+    $('history-list').innerHTML = historyItems.length ? '<div class="history-table-wrap"><table class="history-table"><caption class="sr-only">公共打团历史，单位金币</caption><thead><tr><th scope="col">场次 / 日期</th><th scope="col">总收入</th><th scope="col">总支出</th><th scope="col">发放合计</th><th scope="col">操作</th></tr></thead><tbody>' + historyItems.map(row => `<tr><td><strong>${esc(row.title)}</strong><small>${esc(row.date || '日期待检查')}</small></td><td>${money(row.income)}</td><td>${money(row.expense)}</td><td class="payout">${money(row.distributed)}</td><td><button type="button" data-load-history="${esc(row.id)}">载入编辑</button></td></tr>`).join('') + '</tbody></table></div>' : '<div class="history-empty">还没有公共记录。填好本次账目后，点击「保存到公共历史」。</div>';
+    $('history-more').hidden = !historyCursor;
+    updateHistoryControls();
+  }
+  async function loadHistory(more = false) {
+    if (!online || historyLoading) return;
+    historyLoading = true; updateHistoryControls(); historyMessage('正在读取飞书公共历史…');
+    try {
+      const data = await historyApi(more && historyCursor ? '?cursor=' + encodeURIComponent(historyCursor) : '');
+      const merged = more ? [...historyItems, ...data.items] : data.items;
+      historyItems = Array.from(new Map(merged.map(row => [row.id, row])).values());
+      historyCursor = data.nextCursor;
+      drawHistory(); historyMessage('已读取 ' + historyItems.length + ' 条记录。编辑后点击「更新这条记录」保存。');
+    } catch (error) { historyMessage('读取失败：' + error.message + '。可点击刷新历史重试。', true); }
+    finally { historyLoading = false; updateHistoryControls(); }
+  }
+  async function persistHistory(asNew = false) {
+    if (busy || !online || !result?.valid || !$('raid-date').validity.valid) return;
+    const updating = !!editing && !asNew;
+    if (updating && !await confirmHistory('将更新这条公共历史，其他人也会看到修改后的内容。是否继续？')) return;
+    const payload = { state, date: raidDate };
+    if (updating) payload.baseRevision = editing.revision;
+    else {
+      const signature = JSON.stringify(payload);
+      if (pendingCreate?.signature !== signature) pendingCreate = { signature, requestId: crypto.randomUUID() };
+      payload.requestId = pendingCreate.requestId;
+    }
+    let savedSuccessfully = false;
+    save(); busy = true; updateHistoryControls(); historyMessage('正在保存到飞书，请稍候…');
+    try {
+      const data = await historyApi(updating ? '/' + editing.id : '', { method: updating ? 'PUT' : 'POST', body: JSON.stringify(payload) });
+      state = DividendCore.normalize(data.record.state); raidDate = data.record.date;
+      editing = { id: data.record.id, revision: data.record.revision }; pendingCreate = null;
+      savedSuccessfully = true;
+      render(); toast(updating ? '公共记录已更新' : '已保存到公共历史'); historyMessage('保存成功，其他人刷新历史即可看到。');
+    } catch (error) { historyMessage('未确认保存成功：' + error.message + (updating ? '' : '。请保持当前内容重试，以避免重复创建。'), true); }
+    finally { busy = false; updateHistoryControls(); }
+    if (savedSuccessfully) await loadHistory();
+  }
+  $('raid-date').addEventListener('input', e => { raidDate = e.target.value; save(); updateHistoryControls(); });
+  $('history-save').addEventListener('click', () => persistHistory());
+  $('save-new').addEventListener('click', () => persistHistory(true));
+  $('history-refresh').addEventListener('click', () => loadHistory());
+  $('history-more').addEventListener('click', () => loadHistory(true));
+  $('history-list').addEventListener('click', async e => {
+    const id = e.target.closest('[data-load-history]')?.dataset.loadHistory;
+    if (!id || busy) return;
+    if (hasData() && !await confirmHistory('载入公共记录会替换当前本机草稿，建议先导出备份。是否继续？')) return;
+    busy = true; updateHistoryControls(); historyMessage('正在载入完整结算…');
+    try {
+      const { record } = await historyApi('/' + id);
+      const restored = DividendCore.normalize(record.state);
+      state = restored; raidDate = record.date; editing = { id: record.id, revision: record.revision }; pendingCreate = null;
+      render(); notice('已载入公共历史。修改后点击「更新这条记录」；如需保留原记录，可选择「另存为新场次」。'); historyMessage('已载入「' + record.title + '」，可以继续编辑。');
+      $('settlement-title').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (error) { historyMessage('载入失败：' + error.message, true); }
+    finally { busy = false; updateHistoryControls(); }
+  });
   render(false);
+  if (online) loadHistory();
+  else { historyMessage('本地文件继续提供离线计算和本机草稿。公共历史请在已发布的网站中打开。'); drawHistory(); }
 })();
 </script>
 </body>
