@@ -27,7 +27,7 @@
   <div class="intro"><div><p class="eyebrow">BOSS LOOT / PARTY DIVIDENDS</p><h1>好好冒险，<span>明白分账。</span></h1><p class="subtitle">记下每一笔收支，让每位队友的收获都有据可查。</p></div><div class="intro-badge" aria-hidden="true"><strong>✧</strong>本次冒险<br>圆满收工</div></div>
   <div id="notice" class="notice" role="status" hidden></div>
   <fieldset id="editor-fields" class="editor-fields"><legend class="sr-only">分红账目编辑器</legend>
-  <div class="toolbar"><label><span class="sr-only">结算名称</span><input id="settlement-title" class="title-field" maxlength="100" placeholder="给本次结算起个名字"></label><div class="toolbar-buttons"><button type="button" id="demo" class="accent small">试试示例</button><button type="button" id="import" class="small">导入备份</button><button type="button" id="export" class="small">导出备份</button><button type="button" id="clear" class="text-button danger small">清空账目</button><input type="file" id="import-file" accept=".json,application/json" hidden></div></div>
+  <div class="toolbar"><label><span class="small">场次名称（可自定义）</span><input id="settlement-title" class="title-field" maxlength="100" placeholder="例如：周二晚团 · 扎昆第1场"></label><div class="toolbar-buttons"><button type="button" id="demo" class="accent small">试试示例</button><button type="button" id="import" class="small">导入备份</button><button type="button" id="export" class="small">导出备份</button><button type="button" id="clear" class="text-button danger small">清空账目</button><input type="file" id="import-file" accept=".json,application/json" hidden></div></div>
   <div class="history-controls"><label class="history-date">打团日期<input type="date" id="raid-date" required aria-label="打团日期"></label><div class="history-save-actions"><span id="history-mode" class="history-mode" role="status">当前为新场次草稿</span><button type="button" id="save-new" hidden>另存为新场次</button><button type="button" id="history-save" class="primary" disabled>保存到公共历史</button></div></div>
   <section class="stats" aria-label="结算概览"><div class="stat"><div class="stat-label">总收入 <span>↗</span></div><div class="stat-value" id="stat-income">0<span class="unit">金币</span></div><div class="stat-note">卖店 + 交易 + 老板消费</div></div><div class="stat"><div class="stat-label">总支出 <span>↘</span></div><div class="stat-value" id="stat-expense">0<span class="unit">金币</span></div><div class="stat-note" id="expense-note">材料 0 · 补贴 0</div></div><div class="stat featured"><div class="stat-label">可均分金额 <span>✦</span></div><div class="stat-value" id="stat-pool">0<span class="unit">金币</span></div><div class="stat-note">总收入 − 材料 − 职务补贴</div></div><div class="stat"><div class="stat-label">参与分红 <span>♧</span></div><div class="stat-value" id="stat-count">0<span class="unit">人</span></div><div class="stat-note" id="count-note">老板不计入分红人数</div></div></section>
   <div class="workspace">
@@ -343,7 +343,7 @@ const HistoryClient = (() => {
     $('editor-fields').disabled = busy;
     $('history-refresh').disabled = busy || historyLoading || !online;
     $('history-more').disabled = busy || historyLoading;
-    for (const button of $('history-list').querySelectorAll('button')) button.disabled = busy;
+    for (const button of $('history-list').querySelectorAll('button')) button.disabled = busy || historyLoading;
   }
   function historyMessage(message, error = false) { $('history-message').textContent = message; $('history-message').classList.toggle('error', error); }
   function confirmHistory(message) {
@@ -357,7 +357,7 @@ const HistoryClient = (() => {
   const historyApi = HistoryClient.request;
   function drawHistory() {
     const money = value => Number.isSafeInteger(value) && value >= 0 ? fmt(value) : '待检查';
-    $('history-list').innerHTML = historyItems.length ? '<div class="history-table-wrap"><table class="history-table"><caption class="sr-only">公共打团历史，单位金币</caption><thead><tr><th scope="col">场次 / 日期</th><th scope="col">总收入</th><th scope="col">总支出</th><th scope="col">发放合计</th><th scope="col">操作</th></tr></thead><tbody>' + historyItems.map(row => `<tr><td><strong>${esc(row.title)}</strong><small>${esc(row.date || '日期待检查')}</small></td><td>${money(row.income)}</td><td>${money(row.expense)}</td><td class="payout">${money(row.distributed)}</td><td><button type="button" data-load-history="${esc(row.id)}">载入编辑</button></td></tr>`).join('') + '</tbody></table></div>' : '<div class="history-empty">还没有公共记录。填好本次账目后，点击「保存到公共历史」。</div>';
+    $('history-list').innerHTML = historyItems.length ? '<div class="history-table-wrap"><table class="history-table"><caption class="sr-only">公共打团历史，单位金币</caption><thead><tr><th scope="col">场次 / 日期</th><th scope="col">总收入</th><th scope="col">总支出</th><th scope="col">发放合计</th><th scope="col">操作</th></tr></thead><tbody>' + historyItems.map(row => `<tr><td><strong>${esc(row.title)}</strong><small>${esc(row.date || '日期待检查')}</small></td><td>${money(row.income)}</td><td>${money(row.expense)}</td><td class="payout">${money(row.distributed)}</td><td><button type="button" data-load-history="${esc(row.id)}">载入编辑</button> <button type="button" class="danger" data-delete-history="${esc(row.id)}">删除</button></td></tr>`).join('') + '</tbody></table></div>' : '<div class="history-empty">还没有公共记录。填好本次账目后，点击「保存到公共历史」。</div>';
     $('history-more').hidden = !historyCursor;
     updateHistoryControls();
   }
@@ -402,6 +402,24 @@ const HistoryClient = (() => {
   $('history-refresh').addEventListener('click', () => loadHistory());
   $('history-more').addEventListener('click', () => loadHistory(true));
   $('history-list').addEventListener('click', async e => {
+    const deleteId = e.target.closest('[data-delete-history]')?.dataset.deleteHistory;
+    if (deleteId) {
+      if (busy || historyLoading) return;
+      const row = historyItems.find(item => item.id === deleteId);
+      if (!row || !await confirmHistory('确定删除「' + row.title + '」' + (row.date ? '（' + row.date + '）' : '') + '吗？飞书中的对应记录也会被删除，其他人将无法再查看这条历史。此操作不能在网页中撤销。')) return;
+      busy = true; updateHistoryControls(); historyMessage('正在删除公共记录…');
+      try {
+        await historyApi('/' + deleteId, { method: 'DELETE' });
+        historyItems = historyItems.filter(item => item.id !== deleteId);
+        if (editing?.id === deleteId) {
+          editing = null; pendingCreate = null; save();
+          notice('公共记录已删除，当前账目草稿仍保留。如需重新保存，将作为新场次。');
+        }
+        drawHistory(); historyMessage('已删除「' + row.title + '」，飞书对应记录已移除。'); toast('公共历史已删除');
+      } catch (error) { historyMessage('删除失败：' + error.message + '。当前草稿已保留，可刷新历史核对后重试。', true); }
+      finally { busy = false; updateHistoryControls(); }
+      return;
+    }
     const id = e.target.closest('[data-load-history]')?.dataset.loadHistory;
     if (!id || busy) return;
     if (hasData() && !await confirmHistory('载入公共记录会替换当前本机草稿，建议先导出备份。是否继续？')) return;
