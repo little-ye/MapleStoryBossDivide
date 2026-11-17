@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>冒险团 · Boss 分红账本</title>
+<style>
+:root{--paper:#f7f5ef;--card:#fffefa;--ink:#263b32;--muted:#788279;--line:#e5e6dc;--orange:#e77736;--orange-light:#fff0e4;--green:#335a45;--red:#ae483d;--shadow:0 8px 30px #253b3205}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;transition:background .15s,transform .15s}button:active{transform:translateY(1px)}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #e7773660;outline-offset:3px}button{border:1px solid var(--line);border-radius:9px;background:var(--card);padding:8px 13px;color:var(--ink);white-space:nowrap}button:hover:not(:disabled){background:#f2f1e9}.primary{background:var(--green);border-color:var(--green);color:white}.primary:hover:not(:disabled){background:#264735}.accent{color:#a95525;background:var(--orange-light);border-color:#f3d9c2}.text-button{background:transparent;border:0;padding:4px 8px;color:var(--muted)}.danger{color:var(--red)}.remove{font-size:19px;width:32px;padding:0;border-color:transparent;color:#91998f}.remove:hover:not(:disabled){background:#fff0eb;color:var(--red)}
+.topbar{background:#223c30;color:#f8f6ee}.topbar-inner{max-width:1280px;margin:auto;padding:17px 34px;display:flex;justify-content:space-between;align-items:center}.brand{display:flex;gap:11px;align-items:center;font-weight:650;letter-spacing:1.5px}.brand-mark{display:grid;place-items:center;width:31px;height:31px;background:#e99552;border-radius:9px;color:#243c30;font-size:22px}.top-note{font-size:12px;color:#c7d1c5;display:flex;gap:7px;align-items:center}.dot{width:6px;height:6px;border-radius:50%;background:#b7d59a;display:inline-block}
+.page{max-width:1280px;margin:auto;padding:35px 34px 24px}.intro{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:25px}.eyebrow{font-size:11px;letter-spacing:2px;color:#a97346;font-weight:700;margin:0 0 7px}h1{font-size:30px;line-height:1.3;letter-spacing:-1px;margin:0 0 8px}h1 span{color:var(--orange)}.subtitle{margin:0;color:var(--muted);font-size:13px}.intro-badge{border:1px solid #dedfcf;border-radius:50%;height:77px;width:77px;display:grid;place-content:center;text-align:center;color:#7a8872;font-size:11px;transform:rotate(9deg);flex-shrink:0}.intro-badge strong{font-size:24px;line-height:1.2;color:#b98c53}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.title-field{border:0!important;border-bottom:1px dashed #c8cdbd!important;border-radius:0!important;background:transparent!important;padding:6px 0!important;font-size:16px;font-weight:600;max-width:330px;width:100%;color:var(--ink)}.toolbar-buttons{display:flex;flex-wrap:wrap;gap:7px}.small{font-size:12px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:24px}.stat{padding:17px 20px;background:var(--card);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);min-width:0}.stat-label{color:var(--muted);font-size:12px;margin-bottom:8px;display:flex;justify-content:space-between}.stat-value{font-size:clamp(19px,2.15vw,29px);font-weight:700;line-height:1.4;letter-spacing:-.8px;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.stat-note{font-size:11px;color:var(--muted);margin-top:4px}.stat.featured{background:var(--green);color:#fff;border-color:var(--green)}.featured .stat-label,.featured .stat-note{color:#c9d5c9}.unit{font-size:11px;font-weight:400;margin-left:5px;letter-spacing:0;color:var(--muted)}.featured .unit{color:#d0dccb}
+.workspace{display:grid;grid-template-columns:minmax(0,1.24fr) minmax(0,1fr);gap:20px;align-items:start}.stack{display:grid;gap:20px;min-width:0}.panel{border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow);overflow:hidden;min-width:0}.panel-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px 15px;gap:12px}.heading{display:flex;align-items:center;gap:9px}h2{font-size:16px;margin:0;letter-spacing:-.3px}.step{display:grid;place-items:center;height:23px;width:23px;background:#edf0e6;border-radius:7px;color:#7c8f6f;font-size:11px;font-weight:700}.panel-subtitle{font-size:12px;color:var(--muted);margin:0;padding:0 22px 15px}.panel-body{padding:0 22px 20px}.roster-head{font-size:11px;color:var(--muted);display:grid;grid-template-columns:minmax(90px,1fr) 126px 32px;gap:8px;padding:0 0 6px}.member{padding:12px 0;border-top:1px solid #eeeee5}.member-main{display:grid;grid-template-columns:minmax(90px,1fr) 126px 32px;gap:8px;align-items:center}.member-name{display:flex;align-items:center;gap:8px;min-width:0}.avatar{width:27px;height:27px;background:#f0eee5;color:#919580;border-radius:8px;display:grid;place-items:center;font-size:11px;flex-shrink:0}input,select,textarea{border:1px solid #e0e3d8;border-radius:7px;padding:8px 10px;background:white;color:var(--ink);min-width:0;width:100%}input::placeholder{color:#acb1a5}select{padding-left:7px}input[inputmode=numeric]{font-variant-numeric:tabular-nums;text-align:right}input:disabled{background:#f3f3ec;color:#9aa28f}.bonuses{display:flex;gap:10px;padding:9px 40px 0 35px;flex-wrap:wrap}.bonus-field{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);flex:1;min-width:160px}.bonus-field input{max-width:155px;font-size:12px;padding:5px 8px}.member-note{padding:6px 0 0 35px;font-size:11px;color:#b47c4f}.empty-roster{padding:23px 12px;text-align:center;border:1px dashed #dce0d1;border-radius:10px;background:#fafaf4;color:var(--muted);font-size:13px}.empty-roster strong{display:block;color:#60715e;margin-bottom:5px}.roster-foot{font-size:11px;color:var(--muted);background:#f7f8f0;padding:10px 22px;border-top:1px solid var(--line)}
+.ledger-group{padding:15px 0;border-top:1px solid #eeeee5}.ledger-group:first-child{padding-top:0;border-top:0}.group-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}.group-title{font-size:13px;font-weight:600}.category-dot{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:7px;background:#90a37d}.trade-dot{background:#d5ad5e}.boss-dot{background:#dc9169}.material-dot{background:#9ca6a1}.group-total{font-size:12px;color:#74836c;font-variant-numeric:tabular-nums}.entry{margin:8px 0}.entry-main{display:grid;grid-template-columns:minmax(70px,1fr) minmax(92px,145px) 28px;gap:7px;align-items:center}.entry-main .remove{width:28px}.buyer-field{display:flex;align-items:center;gap:10px;margin:6px 35px 0 0;color:var(--muted);font-size:11px}.buyer-field select{padding:5px 8px;max-width:230px;font-size:11px}.add-line{font-size:11px;color:#78916a;border:0;background:transparent;padding:5px 0}.add-line:hover:not(:disabled){background:transparent;color:var(--green)}.ledger-hint{font-size:11px;color:var(--muted);padding-top:8px}
+.results{position:sticky;top:20px}.result-banner{background:#f0f3e9;border-top:1px solid #e5eadb;border-bottom:1px solid #e5eadb;padding:17px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px}.result-banner .amount{font-size:25px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.result-banner p{margin:0;font-size:11px;color:#819075}.tag{font-size:10px;background:#e0e8d5;color:#6a8059;border-radius:5px;padding:3px 7px;white-space:nowrap}.table-wrap{overflow-x:auto;margin:0 22px}table{border-collapse:collapse;width:100%;font-size:12px;white-space:nowrap}th{text-align:right;font-size:10px;color:#8b9486;font-weight:400;padding:14px 7px 10px}th:first-child,td:first-child{text-align:left}td{border-bottom:1px solid #eceee5;text-align:right;padding:13px 7px;font-variant-numeric:tabular-nums}td:first-child{max-width:150px;white-space:normal;overflow-wrap:anywhere}td strong{font-size:13px}td small{display:block;color:#8b9486;font-size:10px;margin-top:2px}.payout{font-weight:700;color:var(--green)}.extra{display:inline;color:#c07a38;font-size:10px}.boss-row td{color:#979b90}.boss-row td:first-child{color:#a47d5d}.result-foot{padding:16px 22px;font-size:11px;color:#7d8875}.reconcile{display:flex;justify-content:space-between;gap:10px;padding-top:10px;margin-top:10px;border-top:1px dashed #dde3d3}.reconcile strong{color:var(--green)}.empty-result{padding:38px 30px 34px;text-align:center}.empty-icon{width:56px;height:56px;background:#f0f2e7;border-radius:17px;display:grid;place-items:center;margin:0 auto 15px;color:#94a47d;font-size:26px}.empty-result h3{font-size:15px;font-weight:600;margin:0 0 6px}.empty-result p{color:var(--muted);font-size:12px;margin:0}.error-box{margin:5px 22px 20px;padding:13px 15px;border:1px solid #f0d9cf;border-radius:8px;background:#fff6f0;color:#a4583f;font-size:12px}.error-box ul{padding-left:17px;margin:5px 0 0}.rule-card{padding:20px 22px}.rule-card h3{font-size:12px;margin:0 0 8px}.rule-card p{font-size:12px;color:#829077;line-height:1.9;margin:0}.formula{font-size:12px;margin:10px 0;padding:10px 12px;background:#f3f3e9;border-radius:8px;color:#6d7b5e}.legend{display:flex;gap:15px;margin-top:12px;font-size:11px;color:#839075}.footer{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-top:26px;padding-top:17px;border-top:1px solid #dfe2d6;color:#939b8c;font-size:11px}.save-status{color:#7b8f6b}.save-status.warning{color:var(--red)}.notice{background:#fff0e4;color:#a45a31;border:1px solid #f2d9c5;border-radius:8px;padding:12px 15px;margin-bottom:15px;font-size:12px}.notice[hidden]{display:none}dialog{border:1px solid var(--line);border-radius:14px;padding:23px;width:min(600px,90vw);max-height:85vh;color:var(--ink);background:var(--card)}dialog::backdrop{background:#18332866}dialog h3{margin:0 0 10px}dialog textarea{min-height:300px;font:12px/1.8 monospace;resize:vertical}dialog .dialog-actions{margin-top:12px;display:flex;justify-content:flex-end;gap:8px}.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);z-index:5;background:#243c30;color:#fffaf0;border-radius:10px;padding:11px 20px;box-shadow:0 6px 25px #1c302535;max-width:90vw;font-size:13px}.toast[hidden]{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(min-width:1200px){.stat-value{font-size:29px}}@media(max-width:900px){.workspace{grid-template-columns:1fr}.results{position:static}.right-stack{grid-row:2}.stat{padding:14px}.toolbar{align-items:flex-start;flex-direction:column}.toolbar-buttons{width:100%}.stat-value{font-size:22px}}@media(max-width:520px){.page{padding:25px 15px 20px}.topbar-inner{padding:14px 17px}.brand{font-size:12px}.top-note{font-size:10px}.intro{gap:12px;margin-bottom:18px}h1{font-size:25px}.subtitle{font-size:11px}.intro-badge{width:61px;height:61px;font-size:9px}.intro-badge strong{font-size:20px}.stats{grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}.stat{padding:13px}.stat-value{font-size:23px}.stat-note{font-size:10px}.toolbar-buttons{gap:5px}.toolbar-buttons button{font-size:11px;padding:7px 9px}.panel-head{padding:17px 15px 13px}.panel-subtitle{padding:0 15px 13px;font-size:11px}.panel-body{padding:0 15px 15px}.member-main,.roster-head{grid-template-columns:minmax(90px,1fr) 108px 26px;gap:5px}.member-main select{font-size:12px}.member-name{gap:5px}.avatar{width:21px;height:24px}.member .remove{width:26px}.bonuses{padding:8px 30px 0 26px}.entry-main{grid-template-columns:minmax(65px,1fr) 115px 25px;gap:5px}.entry-main input{font-size:12px;padding:8px}.entry-main .remove{width:25px}.table-wrap{margin:0 12px}.footer{align-items:flex-start;flex-direction:column;gap:5px}.result-banner{padding:15px}.result-banner .amount{font-size:23px}.result-foot{padding:15px}.legend{gap:10px}.error-box{margin:0 15px 15px}.unit{font-size:10px}.roster-foot{padding:9px 15px}}
+@media print{.topbar,.toolbar-buttons,.remove,.add-line,.footer,.rule-card,button,.intro-badge,.toast{display:none!important}body{background:white}.page{padding:0}.workspace{display:block}.panel{break-inside:avoid;margin-bottom:15px;box-shadow:none}.results{position:static}.stack{display:block}.panel-body{padding-bottom:10px}.stats{gap:8px}.stat{box-shadow:none}.stat.featured{color:var(--ink);background:#f0f3e9}.featured .stat-label,.featured .stat-note,.featured .unit{color:#60705d}input,select{border:0;background:white;padding-left:0} .table-wrap{overflow:visible}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner"><div class="brand"><span class="brand-mark" aria-hidden="true">✦</span>冒险团 · 战利品账本</div><span class="top-note"><i class="dot"></i> 离线可用 · 数据留在本机</span></div></header>
+<main class="page">
+  <div class="intro"><div><p class="eyebrow">BOSS LOOT / PARTY DIVIDENDS</p><h1>好好冒险，<span>明白分账。</span></h1><p class="subtitle">记下每一笔收支，让每位队友的收获都有据可查。</p></div><div class="intro-badge" aria-hidden="true"><strong>✧</strong>本次冒险<br>圆满收工</div></div>
+  <div id="notice" class="notice" role="status" hidden></div>
+  <div class="toolbar"><label><span class="sr-only">结算名称</span><input id="settlement-title" class="title-field" maxlength="100" placeholder="给本次结算起个名字"></label><div class="toolbar-buttons"><button type="button" id="demo" class="accent small">试试示例</button><button type="button" id="import" class="small">导入备份</button><button type="button" id="export" class="small">导出备份</button><button type="button" id="clear" class="text-button danger small">清空账目</button><input type="file" id="import-file" accept=".json,application/json" hidden></div></div>
+  <section class="stats" aria-label="结算概览"><div class="stat"><div class="stat-label">总收入 <span>↗</span></div><div class="stat-value" id="stat-income">0<span class="unit">金币</span></div><div class="stat-note">卖店 + 交易 + 老板消费</div></div><div class="stat"><div class="stat-label">总支出 <span>↘</span></div><div class="stat-value" id="stat-expense">0<span class="unit">金币</span></div><div class="stat-note" id="expense-note">材料 0 · 补贴 0</div></div><div class="stat featured"><div class="stat-label">可均分金额 <span>✦</span></div><div class="stat-value" id="stat-pool">0<span class="unit">金币</span></div><div class="stat-note">总收入 − 材料 − 职务补贴</div></div><div class="stat"><div class="stat-label">参与分红 <span>♧</span></div><div class="stat-value" id="stat-count">0<span class="unit">人</span></div><div class="stat-note" id="count-note">老板不计入分红人数</div></div></section>
+  <div class="workspace">
+    <div class="stack">
+      <section class="panel"><div class="panel-head"><div class="heading"><span class="step">01</span><h2>冒险队员</h2></div><button type="button" id="add-member" class="small">＋ 添加队员</button></div><p class="panel-subtitle">团长和奶妈领取补贴后仍参与均分，老板只计消费。</p><div class="panel-body"><div id="roster"></div></div><div class="roster-foot">兼任职务可叠加补贴 · 零头金币按队员顺序分配</div></section>
+      <section class="panel"><div class="panel-head"><div class="heading"><span class="step">02</span><h2>本次收支</h2></div><span class="small" style="color:var(--muted)">统一单位：金币</span></div><p class="panel-subtitle">填写整数金额；贵重物品按实际到账金币记录。</p><div class="panel-body" id="ledger"></div></section>
+    </div>
+    <div class="stack right-stack results">
+      <section class="panel"><div class="panel-head"><div class="heading"><span class="step">03</span><h2>分红明细</h2></div><button type="button" id="copy" class="primary small" disabled>复制结算明细</button></div><div id="result"></div></section>
+      <aside class="panel rule-card"><h3>每一份收益，怎么算？</h3><p>先扣除召唤材料和职务补贴，再由非老板队员均分。</p><div class="formula">个人应得 = 均分所得 + 团长补贴 + 奶妈补贴</div><p>老板消费仅增加收入，不产生分红份额。补贴按人填写，兼任时两项相加。</p><div class="legend"><span>● 普通队员：均分</span><span>● 团长 / 奶妈：均分 + 补贴</span></div></aside>
+    </div>
+  </div>
+  <footer class="footer"><span>冒险有伙伴，分账有依据。</span><span id="save-status" class="save-status" role="status">当前浏览器自动保存 · 建议定期导出备份</span></footer>
+</main>
+<dialog id="copy-dialog"><h3>结算明细</h3><p class="small">当前浏览器无法自动复制，请选中下方内容后手动复制。</p><label><span class="sr-only">可手动复制的结算明细</span><textarea id="copy-text" readonly></textarea></label><div class="dialog-actions"><button type="button" id="select-text">全选文本</button><button type="button" id="close-dialog" class="primary">完成</button></div></dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+<script id="dividend-core">
+'use strict';
+var DividendCore = (() => {
+  const MAX = BigInt(Number.MAX_SAFE_INTEGER);
+  const categories = ['shop', 'trade', 'boss', 'material'];
+  const labels = { shop: '杂物卖店', trade: '贵重交易', boss: '老板消费', material: '召唤材料' };
+  function text(value, max, label) {
+    if (typeof value !== 'string' || value.length > max) throw new Error(label + '格式不正确或过长');
+    return value;
+  }
+  function amountText(value) {
+    if (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0) return String(value);
+    return text(value, 40, '金额');
+  }
+  function normalize(data) {
+    if (!data || data.version !== 1 || !Array.isArray(data.members) || !Array.isArray(data.entries)) throw new Error('不是受支持的账目备份（需要版本 1）');
+    if (data.members.length > 200 || data.entries.length > 1000) throw new Error('队员或收支明细数量过多');
+    const members = data.members.map(m => {
+      if (!m || ['boss', 'leader', 'healer'].some(k => typeof m[k] !== 'boolean')) throw new Error('队员职务格式不正确');
+      return { id: text(m.id, 80, '队员标识'), name: text(m.name, 80, '队员姓名'), boss: m.boss, leader: m.leader, healer: m.healer, leaderBonus: amountText(m.leaderBonus), healerBonus: amountText(m.healerBonus) };
+    });
+    const entries = data.entries.map(e => {
+      if (!e || !categories.includes(e.category)) throw new Error('收支分类不正确');
+      return { id: text(e.id, 80, '明细标识'), category: e.category, description: text(e.description, 200, '明细说明'), amount: amountText(e.amount), buyerId: text(e.buyerId, 80, '消费关联') };
+    });
+    for (const [items, label] of [[members, '队员'], [entries, '明细']]) {
+      if (items.some(x => !x.id) || new Set(items.map(x => x.id)).size !== items.length) throw new Error(label + '标识为空或重复');
+    }
+    for (const e of entries) {
+      if (e.buyerId && (e.category !== 'boss' || !members.some(m => m.id === e.buyerId && m.boss))) throw new Error('消费关联必须是当前队内老板');
+    }
+    return { version: 1, title: text(data.title, 100, '结算名称'), members, entries };
+  }
+  function money(raw, label) {
+    const value = raw.trim();
+    if (value !== '' && !/^\d+$/.test(value)) throw new Error(label + '：请填写非负整数金币，不含逗号、小数或科学计数');
+    const n = BigInt(value || '0');
+    if (n > MAX) throw new Error(label + '：金额超出安全整数范围');
+    return n;
+  }
+  function calculate(input) {
+    const errors = [];
+    let s;
+    try { s = normalize(input); } catch (error) { return { valid: false, errors: [error.message] }; }
+    const names = new Set();
+    const bonuses = new Map();
+    let amountsValid = true;
+    let subsidies = 0n;
+    for (const [i, m] of s.members.entries()) {
+      const name = m.name.trim();
+      if (!name) errors.push('第 ' + (i + 1) + ' 位队员还没有填写姓名');
+      else if (names.has(name)) errors.push('队员姓名重复：' + name);
+      names.add(name);
+      if (m.boss && (m.leader || m.healer)) errors.push((name || '老板') + '：老板不能兼任补贴职务');
+      try {
+        const leader = money(m.leaderBonus, (name || '队员') + '的团长补贴');
+        const healer = money(m.healerBonus, (name || '队员') + '的奶妈补贴');
+        if ((!m.leader && leader > 0n) || (!m.healer && healer > 0n)) errors.push((name || '队员') + '：存在与当前职务不符的补贴，请检查');
+        const bonus = (m.leader ? leader : 0n) + (m.healer ? healer : 0n);
+        bonuses.set(m.id, { leader: m.leader ? leader : 0n, healer: m.healer ? healer : 0n, bonus });
+        subsidies += bonus;
+      } catch (error) { amountsValid = false; errors.push(error.message); }
+    }
+    const totals = { shop: 0n, trade: 0n, boss: 0n, material: 0n };
+    const spending = new Map();
+    for (const [i, e] of s.entries.entries()) {
+      try {
+        const n = money(e.amount, labels[e.category] + '第 ' + (i + 1) + ' 笔');
+        totals[e.category] += n;
+        if (e.category === 'boss' && e.buyerId) spending.set(e.buyerId, (spending.get(e.buyerId) || 0n) + n);
+      } catch (error) { amountsValid = false; errors.push(error.message); }
+    }
+    const income = totals.shop + totals.trade + totals.boss;
+    const material = totals.material;
+    const expense = material + subsidies;
+    if ([income, material, subsidies, expense].some(n => n > MAX)) errors.push('累计金额超出安全整数范围，请拆分账目');
+    const count = s.members.filter(m => !m.boss).length;
+    const pool = income - expense;
+    if (count === 0) errors.push('请至少添加一位参与分红的队员（老板不计入）');
+    if (pool < 0n) errors.push('收入不足以支付材料和补贴，还差 ' + (-pool).toLocaleString('zh-CN') + ' 金币，暂不能分红');
+    const result = { valid: errors.length === 0, errors, count };
+    if (amountsValid && ![income, expense, subsidies].some(n => n > MAX)) Object.assign(result, { income: Number(income), material: Number(material), subsidies: Number(subsidies), expense: Number(expense), pool: Number(pool), categories: Object.fromEntries(Object.entries(totals).map(([k, v]) => [k, Number(v)])) });
+    if (!result.valid) return result;
+    const base = pool / BigInt(count);
+    const remainder = pool % BigInt(count);
+    let index = 0n;
+    const people = s.members.map(m => {
+      const extra = !m.boss && index++ < remainder ? 1n : 0n;
+      const bonus = bonuses.get(m.id);
+      const share = m.boss ? 0n : base;
+      return { id: m.id, name: m.name.trim(), boss: m.boss, leader: m.leader, healer: m.healer, base: Number(share), extra: Number(extra), leaderBonus: Number(bonus.leader), healerBonus: Number(bonus.healer), bonus: Number(bonus.bonus), total: Number(share + extra + bonus.bonus), consumption: Number(spending.get(m.id) || 0n) };
+    });
+    return Object.assign(result, { base: Number(base), remainder: Number(remainder), people, distributed: Number(income - material) });
+  }
+  const format = n => Number(n).toLocaleString('zh-CN');
+  function statement(s, r) {
+    if (!r.valid) throw new Error('账目尚未满足结算条件');
+    const lines = [s.title.trim() || 'Boss 分红结算', '单位：金币', '', '总收入：' + format(r.income), '召唤材料：' + format(r.material), '职务补贴：' + format(r.subsidies), '总支出：' + format(r.expense), '分红池：' + format(r.pool), '分红人数：' + r.count + ' 人', '每人基础分红：' + format(r.base), ''];
+    for (const p of r.people) {
+      if (p.boss) lines.push(p.name + '｜消费 ' + format(p.consumption) + '｜不参与分红，应得 0');
+      else lines.push(p.name + '｜' + (p.leader && p.healer ? '团长兼奶妈' : p.leader ? '团长' : p.healer ? '奶妈' : '队员') + '｜均分 ' + format(p.base) + (p.extra ? ' + 零头 1' : '') + (p.leader ? ' + 团长补贴 ' + format(p.leaderBonus) : '') + (p.healer ? ' + 奶妈补贴 ' + format(p.healerBonus) : '') + '｜应得 ' + format(p.total));
+    }
+    lines.push('', '发放合计：' + format(r.distributed) + '（总收入 − 材料费）', '零头规则：按参与分红队员的列表顺序补齐，每人最多 1 金币。', '', '收支明细：');
+    for (const e of s.entries) {
+      const buyer = s.members.find(m => m.id === e.buyerId);
+      lines.push(labels[e.category] + '｜' + (e.description || '未填写说明') + (buyer ? '（' + buyer.name.trim() + '）' : '') + '｜' + format(Number(e.amount.trim() || '0')));
+    }
+    return lines.join('\n');
+  }
+  function unlinkBuyer(s, memberId) {
+    for (const e of s.entries) if (e.buyerId === memberId) e.buyerId = '';
+  }
+  return { normalize, calculate, statement, unlinkBuyer };
+})();
+</script>
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const key = 'maple-boss-dividend-v1';
+  const labels = { shop: '杂物卖店', trade: '贵重物品交易', boss: '老板消费', material: '召唤 Boss 材料' };
+  const placeholders = { shop: '例如：杂物、装备卖店', trade: '例如：技能书交易到账', boss: '例如：老板购买装备', material: '例如：召唤材料、门票' };
+  const fmt = n => Number(n).toLocaleString('zh-CN');
+  const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const uid = () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + Math.random().toString(36).slice(2);
+  const makeMember = (name = '') => ({ id: uid(), name, boss: false, leader: false, healer: false, leaderBonus: '0', healerBonus: '0' });
+  const makeEntry = category => ({ id: uid(), category, description: '', amount: '', buyerId: '' });
+  const fresh = () => ({ version: 1, title: '本次 Boss 结算', members: [], entries: Object.keys(labels).map(makeEntry) });
+  let state = fresh();
+  let toastTimer;
+  let result;
+  function toast(message) { $('toast').textContent = message; $('toast').hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { $('toast').hidden = true; }, 3500); }
+  function notice(message) { $('notice').textContent = message; $('notice').hidden = !message; }
+  function save() {
+    try { localStorage.setItem(key, JSON.stringify(state)); $('save-status').textContent = '已自动保存到当前浏览器 · 建议定期导出备份'; $('save-status').classList.remove('warning'); }
+    catch { $('save-status').textContent = '浏览器无法保存，请及时导出备份'; $('save-status').classList.add('warning'); }
+  }
+  try {
+    const saved = localStorage.getItem(key);
+    if (saved) state = DividendCore.normalize(JSON.parse(saved));
+  } catch { notice('未能恢复浏览器中的账目：存储不可用或数据损坏。你可以继续计算，也可以导入之前的 JSON 备份。'); }
+  function role(m) { return m.boss ? 'boss' : m.leader && m.healer ? 'both' : m.leader ? 'leader' : m.healer ? 'healer' : 'member'; }
+  function drawRoster() {
+    $('roster').innerHTML = state.members.length ? '<div class="roster-head"><span>队员名称</span><span>队内职务</span><span></span></div>' + state.members.map((m, i) => `<div class="member" data-member="${esc(m.id)}"><div class="member-main"><div class="member-name"><span class="avatar" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><label style="min-width:0;width:100%"><span class="sr-only">第 ${i + 1} 位队员姓名</span><input data-field="name" value="${esc(m.name)}" maxlength="80" placeholder="队员名称"></label></div><label><span class="sr-only">第 ${i + 1} 位队员职务</span><select data-field="role">${[['member', '普通队员'], ['leader', '团长'], ['healer', '奶妈'], ['both', '团长兼奶妈'], ['boss', '老板（不分红）']].map(([v, label]) => `<option value="${v}"${role(m) === v ? ' selected' : ''}>${label}</option>`).join('')}</select></label><button type="button" class="remove" data-remove-member="${esc(m.id)}" aria-label="删除第 ${i + 1} 位队员">×</button></div>${m.leader || m.healer ? `<div class="bonuses">${m.leader ? bonusInput(m, 'leaderBonus', '团长补贴') : ''}${m.healer ? bonusInput(m, 'healerBonus', '奶妈补贴') : ''}</div>` : ''}${m.boss ? '<div class="member-note">消费记入下方收入，不参与均分</div>' : ''}</div>`).join('') : '<div class="empty-roster"><strong>先把一起冒险的伙伴加进来</strong>点击右上角「添加队员」，也可以先试试示例。</div>';
+    $('add-member').disabled = state.members.length >= 200;
+  }
+  function bonusInput(m, field, label) { return `<label class="bonus-field">${label}<input data-field="${field}" inputmode="numeric" maxlength="40" value="${esc(m[field])}" aria-label="${esc(m.name || '队员')}的${label}（金币）" placeholder="0"></label>`; }
+  function drawLedger() {
+    const bosses = state.members.filter(m => m.boss);
+    $('ledger').innerHTML = Object.entries(labels).map(([cat, label]) => `<div class="ledger-group"><div class="group-head"><span class="group-title"><i class="category-dot ${cat}-dot"></i>${label}</span><span class="group-total" id="total-${cat}">0 金币</span></div>${state.entries.filter(e => e.category === cat).map((e, i) => `<div class="entry" data-entry="${esc(e.id)}"><div class="entry-main"><label><span class="sr-only">${label}第 ${i + 1} 笔说明</span><input data-field="description" maxlength="200" placeholder="${placeholders[cat]}" value="${esc(e.description)}"></label><label><span class="sr-only">${label}第 ${i + 1} 笔金额（金币）</span><input data-field="amount" inputmode="numeric" maxlength="40" placeholder="0" value="${esc(e.amount)}"></label><button type="button" class="remove" data-remove-entry="${esc(e.id)}" aria-label="删除${label}第 ${i + 1} 笔">×</button></div>${cat === 'boss' ? `<label class="buyer-field">消费老板<select data-field="buyerId"><option value="">仅记收入，不关联队员</option>${bosses.map(m => `<option value="${esc(m.id)}"${e.buyerId === m.id ? ' selected' : ''}>${esc(m.name || '未命名老板')}</option>`).join('')}</select></label>` : ''}</div>`).join('')}<button type="button" class="add-line" data-add-entry="${cat}"${state.entries.length >= 1000 ? ' disabled' : ''}>＋ 添加一笔${cat === 'material' ? '材料支出' : '收入'}</button></div>`).join('') + '<div class="ledger-hint">收入填实际到账金额；留空金额按 0 计算。老板消费不要重复记入交易收入。</div>';
+  }
+  function updateResults(persist = true) {
+    result = DividendCore.calculate(state);
+    const moneyStat = (id, value) => { $(id).innerHTML = (value === undefined ? '—' : fmt(value)) + '<span class="unit">金币</span>'; };
+    moneyStat('stat-income', result.income); moneyStat('stat-expense', result.expense); moneyStat('stat-pool', result.pool);
+    $('expense-note').textContent = result.material === undefined ? '请检查金额输入' : '材料 ' + fmt(result.material) + ' · 补贴 ' + fmt(result.subsidies);
+    const count = state.members.filter(m => !m.boss).length;
+    $('stat-count').innerHTML = count + '<span class="unit">人</span>';
+    $('count-note').textContent = '共 ' + state.members.length + ' 位成员 · ' + state.members.filter(m => m.boss).length + ' 位老板不分红';
+    for (const cat of Object.keys(labels)) { const el = $('total-' + cat); if (el) el.textContent = result.categories ? fmt(result.categories[cat]) + ' 金币' : '待检查金额'; }
+    $('copy').disabled = !result.valid;
+    if (!result.valid) {
+      $('result').innerHTML = '<div class="empty-result"><div class="empty-icon" aria-hidden="true">♧</div><h3>' + (state.members.length ? '再核对一下，就能分红了' : '等待伙伴，等待战利品') + '</h3><p>填好队员和收支后，这里会自动算出每人应得。</p></div>' + (state.members.length || result.errors.length > 1 ? '<div class="error-box" role="status"><strong>暂不能结算</strong><ul>' + result.errors.map(e => '<li>' + esc(e) + '</li>').join('') + '</ul></div>' : '');
+    } else {
+      $('result').innerHTML = `<div class="result-banner"><div><p>每人基础分红</p><div class="amount">${fmt(result.base)}<span class="unit">金币</span></div></div><span class="tag">${result.count} 人均分</span></div><div class="table-wrap"><table><caption class="sr-only">每位成员的基础分红、补贴及最终应得，单位金币</caption><thead><tr><th scope="col">队员 / 职务</th><th scope="col">均分</th><th scope="col">补贴</th><th scope="col">最终应得</th></tr></thead><tbody>${result.people.map(p => `<tr class="${p.boss ? 'boss-row' : ''}"><td><strong>${esc(p.name)}</strong><small>${p.boss ? '老板 · 不分红' : p.leader && p.healer ? '团长兼奶妈' : p.leader ? '团长' : p.healer ? '奶妈' : '普通队员'}</small>${p.boss ? `<small>消费 ${fmt(p.consumption)}</small>` : ''}</td><td>${p.boss ? '—' : fmt(p.base) + (p.extra ? ' <span class="extra">+1</span>' : '')}</td><td>${p.bonus ? fmt(p.bonus) : '—'}${p.leader && p.healer ? `<small>团 ${fmt(p.leaderBonus)} / 奶 ${fmt(p.healerBonus)}</small>` : ''}</td><td class="payout">${fmt(p.total)}</td></tr>`).join('')}</tbody></table></div><div class="result-foot">${result.remainder ? `余下 ${result.remainder} 金币已按顺序分给前 ${result.remainder} 位参与者，每人补 1 金币。` : '本次刚好均分，没有零头金币。'}<div class="reconcile"><span>发放合计（含补贴）</span><strong>${fmt(result.distributed)} 金币</strong></div><div style="margin-top:5px;text-align:right">等于总收入 − 材料费，账目一致 ✓</div></div>`;
+    }
+    if (persist) save();
+  }
+  function render(persist = true) { $('settlement-title').value = state.title; drawRoster(); drawLedger(); updateResults(persist); }
+  function unlinkBuyer(m) {
+    DividendCore.unlinkBuyer(state, m.id);
+  }
+  $('settlement-title').addEventListener('input', e => { state.title = e.target.value; updateResults(); });
+  $('add-member').addEventListener('click', () => { if (state.members.length >= 200) return; state.members.push(makeMember()); drawRoster(); updateResults(); $('roster').lastElementChild.querySelector('input').focus(); });
+  $('roster').addEventListener('input', e => {
+    const field = e.target.dataset.field;
+    if (!field || field === 'role') return;
+    const m = state.members.find(m => m.id === e.target.closest('[data-member]')?.dataset.member);
+    if (!m) return;
+    m[field] = e.target.value;
+    if (field === 'name' && m.boss) {
+      for (const select of $('ledger').querySelectorAll('select[data-field="buyerId"]')) for (const option of select.options) if (option.value === m.id) option.textContent = m.name || '未命名老板';
+    }
+    updateResults();
+  });
+  $('roster').addEventListener('change', e => {
+    if (e.target.dataset.field !== 'role') return;
+    const m = state.members.find(m => m.id === e.target.closest('[data-member]').dataset.member);
+    const selected = e.target.value;
+    if ((m.leader || m.healer) && selected === 'boss' && !confirm('改为老板后将取消团长、奶妈职务并清除该成员的补贴，是否继续？')) { e.target.value = role(m); return; }
+    if (m.boss && selected !== 'boss') unlinkBuyer(m);
+    m.boss = selected === 'boss'; m.leader = ['leader', 'both'].includes(selected); m.healer = ['healer', 'both'].includes(selected);
+    if (!m.leader) m.leaderBonus = '0'; if (!m.healer) m.healerBonus = '0';
+    drawRoster(); drawLedger(); updateResults();
+  });
+  $('roster').addEventListener('click', e => {
+    const id = e.target.closest('[data-remove-member]')?.dataset.removeMember;
+    if (!id) return;
+    const m = state.members.find(m => m.id === id);
+    if (!confirm('删除「' + (m.name || '未命名队员') + '」？其补贴将移除，已记录的消费收入会保留。')) return;
+    unlinkBuyer(m); state.members = state.members.filter(m => m.id !== id); drawRoster(); drawLedger(); updateResults();
+  });
+  $('ledger').addEventListener('input', e => {
+    const field = e.target.dataset.field;
+    if (!field || e.target.tagName === 'SELECT') return;
+    const row = state.entries.find(row => row.id === e.target.closest('[data-entry]')?.dataset.entry);
+    if (!row) return; row[field] = e.target.value; updateResults();
+  });
+  $('ledger').addEventListener('change', e => {
+    if (e.target.dataset.field !== 'buyerId') return;
+    const row = state.entries.find(row => row.id === e.target.closest('[data-entry]').dataset.entry);
+    row.buyerId = e.target.value; updateResults();
+  });
+  $('ledger').addEventListener('click', e => {
+    const add = e.target.closest('[data-add-entry]'); const remove = e.target.closest('[data-remove-entry]');
+    if (add && state.entries.length < 1000) { const row = makeEntry(add.dataset.addEntry); state.entries.push(row); drawLedger(); updateResults(); for (const el of $('ledger').querySelectorAll('[data-entry]')) if (el.dataset.entry === row.id) el.querySelector('input').focus(); }
+    if (remove) { state.entries = state.entries.filter(row => row.id !== remove.dataset.removeEntry); drawLedger(); updateResults(); }
+  });
+  function hasData() { return state.members.length > 0 || state.entries.some(e => e.amount.trim() !== '' || e.description.trim() !== '') || state.title !== '本次 Boss 结算'; }
+  $('clear').addEventListener('click', () => { if (!confirm('清空所有队员、收支和补贴？此操作会覆盖当前浏览器草稿，建议先导出备份。')) return; state = fresh(); notice(''); render(); toast('账目已清空'); });
+  $('demo').addEventListener('click', () => {
+    if (hasData() && !confirm('载入示例会替换当前账目，建议先导出备份。继续吗？')) return;
+    state = fresh(); state.title = '扎昆讨伐 · 示例结算';
+    state.members = ['陈曦', '陈彧', '老王', '春子', '队内老板'].map(makeMember);
+    Object.assign(state.members[0], { healer: true, healerBonus: '1000000' }); state.members[4].boss = true;
+    state.entries.forEach((e, i) => { e.description = ['装备杂物卖店', '技能书交易到账', '老板购买装备', '召唤材料'][i]; e.amount = ['8000000', '20000000', '5000000', '500000'][i]; if (e.category === 'boss') e.buyerId = state.members[4].id; });
+    notice('已载入示例账目，可以自由修改队员和收支；结果会随填写内容实时更新。'); render();
+  });
+  $('export').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'Boss分红备份-' + new Date().toISOString().slice(0, 10) + '.json'; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500); toast('已导出当前账目备份（包括尚未完成的草稿）');
+  });
+  $('import').addEventListener('click', () => $('import-file').click());
+  $('import-file').addEventListener('change', async e => {
+    const file = e.target.files[0]; if (!file) return;
+    try {
+      if (file.size > 2000000) throw new Error('文件超过 2 MB，无法导入');
+      const imported = DividendCore.normalize(JSON.parse(await file.text()));
+      if (hasData() && !confirm('导入备份将替换当前账目。确认已保存需要的内容并继续吗？')) return;
+      state = imported; notice('已恢复备份。请核对队员和收支；不满足结算条件的草稿会显示具体提示。'); render(); toast('备份导入成功');
+    } catch (error) { notice('导入失败，原账目未变动：' + error.message); }
+    finally { e.target.value = ''; }
+  });
+  $('copy').addEventListener('click', async () => {
+    if (!result.valid) return;
+    const text = DividendCore.statement(state, result);
+    try { await navigator.clipboard.writeText(text); toast('已复制，可粘贴到队伍聊天中'); }
+    catch { $('copy-text').value = text; $('copy-dialog').showModal(); $('copy-text').focus(); $('copy-text').select(); }
+  });
+  $('select-text').addEventListener('click', () => { $('copy-text').focus(); $('copy-text').select(); });
+  $('close-dialog').addEventListener('click', () => $('copy-dialog').close());
+  render(false);
+})();
+</script>
+</body>
+</html>
